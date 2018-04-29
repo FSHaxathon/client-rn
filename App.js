@@ -8,6 +8,9 @@ const client = new ApolloClient({
   uri: 'http://localhost:3999/graphql'
 })
 
+// Data Test.
+// Much hack
+//
 const Family = () => (
   <Query
     query={gql`
