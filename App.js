@@ -1,31 +1,27 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
+import { StackNavigator } from 'react-navigation'
 
-import Family from './components/display'
+import ChooseScreen from './screens/chooseScreen'
+import FamilyDetails from './screens/familyDetails'
 
 const client = new ApolloClient({
   uri: 'https://stormy-scrubland-22228.herokuapp.com'
+})
+
+const RootStack = StackNavigator({
+  Home: { screen: ChooseScreen },
+  Profile: { screen: FamilyDetails }
 })
 
 export default class App extends React.Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <View style={styles.container}>
-          <Family />
-        </View>
+        <RootStack />
       </ApolloProvider>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
