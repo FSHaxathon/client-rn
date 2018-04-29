@@ -13,22 +13,35 @@ const Family = ({ data: { loading, error, person } }) => {
   if (loading) return <Text>Loading...</Text>
   if (error) return <Text>Error :(</Text>
 
-  const { firstName, lastName } = person
+  const { firstName, lastName, dad, mom } = person
   return (
-    <Text>
-      {firstName} {lastName}
-    </Text>
+    <View>
+      <Text>
+        me: {firstName} {lastName}
+      </Text>
+      <Text>
+        dad: {dad.firstName} {dad.lastName}
+      </Text>
+      <Text>
+        mom: {mom.firstName} {mom.lastName}
+      </Text>
+    </View>
   )
 }
 
 const query = gql`
   query PersonQuery {
-    person(id: "121") {
+    person(id: "1024") {
       id
       firstName
       lastName
-      father {
+      dad: father {
         firstName
+        lastName
+      }
+      mom: mother {
+        firstName
+        lastName
       }
     }
   }
