@@ -11,9 +11,15 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Button
+          title="Josephine Patel..."
+          onPress={() => navigate('Profile', { personId: '99' })}
+        />
+
+        <Button
           title="Michael Lee..."
           onPress={() => navigate('Profile', { personId: '1024' })}
         />
+
         <Button
           title="Troy Martino..."
           onPress={() => navigate('Profile', { personId: '2048' })}
