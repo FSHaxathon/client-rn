@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, ScrollView, Text, View } from 'react-native'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -10,11 +10,13 @@ import gql from 'graphql-tag'
  * 3. `data`    resolved response object.
  */
 
-const showName = (label, { firstName, lastName }) => (
-  <Text>
+const showName = (label, { id, firstName, lastName }) => (
+  <Text key={id} style={styles.text}>
     {label} {firstName} {lastName}
   </Text>
 )
+const showNameList = (label, people) =>
+  people.map(person => showName(label, person))
 
 class FamilyDetails extends React.Component {
   static navigationOptions = {
@@ -27,37 +29,46 @@ class FamilyDetails extends React.Component {
     if (loading) return <Text>Loading...</Text>
     if (error) return <Text>Error :(</Text>
 
-    const { firstName, lastName, dad, mom, boFu } = person
+    const { dad, mom, boFu } = person
     return (
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         {showName('', person)}
         {showName('dad:', dad)}
         {showName('mom:', mom)}
-      </View>
+        {showNameList('boFu', boFu)}
+      </ScrollView>
     )
   }
 }
+
+const details = gql`
+  fragment details on Person {
+    id
+    lastName
+    firstName
+  }
+`
 
 const query = gql`
   query($id: String!) {
     person(id: $id) {
       id
-      firstName
-      lastName
+      ...details
+
       dad: father {
-        firstName
-        lastName
+        ...details
       }
+
       mom: mother {
-        firstName
-        lastName
+        ...details
       }
+
       boFu {
-        firstName
-        lastName
+        ...details
       }
     }
   }
+  ${details}
 `
 
 // graphql HOC works IFF there is an ApolloProvider somewhere up
@@ -81,7 +92,11 @@ export default graphql(query, {
 })(FamilyDetails)
 
 const styles = StyleSheet.create({
-  container: {
+  text: {
+    padding: 5
+  },
+
+  contentContainer: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
