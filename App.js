@@ -5,7 +5,7 @@ import { ApolloProvider, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3999/graphql'
+  uri: 'https://stormy-scrubland-22228.herokuapp.com'
 })
 
 // Data Test.
@@ -32,7 +32,7 @@ const Family = () => (
       const { firstName, lastName } = data.person
       return (
         <Text>
-          {firstName} {lastName}`
+          {firstName} {lastName}
         </Text>
       )
     }}
